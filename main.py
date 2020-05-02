@@ -9,16 +9,16 @@ import json
 
 from comments_downloader import downloader_main
 from description_downloader import scrape_video_data
+from datetime import datetime
 
-
-video_url = 'https://www.youtube.com/watch?v=IvGBZaprpWE'
+video_url = 'https://www.youtube.com/watch?v=nXWzbsnb638'
 output_folder = "C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\Data"
 
 
 argv = {}
 argv['youtubeid'] = video_url.split('=')[-1]
 argv['output'] = output_folder
-argv['limit'] = 100000
+argv['limit'] = 1000
 
 
 # Create if directory does not exist
@@ -33,6 +33,10 @@ VideoData = {}
 VideoData['description'] = description_dict
 VideoData['comments'] = comments_dict
 VideoData['size'] = len(comments_dict)
+VideoData['download_date'] = datetime.today().strftime('%Y-%m-%d')
+
+
+
 
 #save to json text file
 print('saving collected data to json file')
