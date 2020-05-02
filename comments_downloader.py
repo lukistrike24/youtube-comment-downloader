@@ -203,11 +203,8 @@ def extract_reply_cids(html):
 
 
 def downloader_main(args):
-    # parser = argparse.ArgumentParser(add_help=False, description=('Download Youtube comments without using the Youtube API'))
-    # parser.add_argument('--help', '-h', action='help', default=argparse.SUPPRESS, help='Show this help message and exit')
-    # parser.add_argument('--youtubeid', '-y', help='ID of Youtube video for which to download the comments')
-    # parser.add_argument('--output', '-o', help='Output filename (output format is line delimited JSON)')
-    # parser.add_argument('--limit', '-l', type=int, help='Limit the number of comments')
+
+    comments_dict = {}
 
     try:
         # args = parser.parse_args(argv)
@@ -224,8 +221,9 @@ def downloader_main(args):
         count = 0
         with io.open(os.path.join(args['output'],args['youtubeid'] + '.json'), 'w', encoding='utf8') as fp:
             for comment in download_comments(youtube_id):
-                comment_json = json.dumps(comment, ensure_ascii=False)
-                print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
+                comments_dict[comment['cid']] = comment
+                #comment_json = json.dumps(comment, ensure_ascii=False)
+                #print(comment_json.decode('utf-8') if isinstance(comment_json, bytes) else comment_json, file=fp)
                 count += 1
                 sys.stdout.write('Downloaded %d comment(s)\r' % count)
                 sys.stdout.flush()
@@ -236,7 +234,6 @@ def downloader_main(args):
     except Exception as e:
         print('Error:', str(e))
         sys.exit(1)
+        
+    return comments_dict         
 
-
-# if __name__ == "__main__":
-#     main(sys.argv[1:])
