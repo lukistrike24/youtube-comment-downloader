@@ -5,46 +5,39 @@ Created on Sat May  2 22:20:34 2020
 @author: luhoe
 """
 import json
-from collections import Counter
-import pandas as pd
+import os
+from tqdm import tqdm
 
-video_url = 'https://www.youtube.com/watch?v=IvGBZaprpWE'
-data_folder = "C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\Data"
-
-ID =  video_url.split('=')[-1]
-
-f = open(data_folder + '\\' + ID + '.json')
-data = json.load(f)
-comments = data['comments']
+# folder containing the downloaded .json files
+data_folder = "C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\Data\\Galileo"
 
 
-#creating Dataframe
-init_comments_df = pd.DataFrame(columns=['cid', 'author', 'text', 'time', 'votes'])
-init_comments_df = pd.DataFrame(comments).T
-init_comments_df = init_comments_df.reset_index(drop=True)
-convert_dict = {'votes': int} 
-init_comments_df = init_comments_df.astype(convert_dict) 
+#prepare data for word2vec
+
+min_len = 10
+max_len = 300
+
+with open(data_folder + '_summary.txt', 'a') as file:
+    for filename in tqdm(os.listdir(data_folder)):
+        if filename.endswith(".json"): 
+            
+            f = open(data_folder + '\\' + filename)
+            data = json.load(f)
+            comments = data['comments']
+
+            #seperating initiial comments and answers and write comments to summary file
+            for comment in comments:
+                if '.' not in (comments[comment]['cid']): 
+                    try:
+                        if (len(comments[comment]['text']) >  min_len) and (len(comments[comment]['text']) <  max_len):
+                            file.write(comments[comment]['text'] + '\n')
+                    except:
+                        file.write(comments[comment]['text'].encode('ascii', 'ignore').decode('ascii'))
+                else:
+                    isAnswer = True
+
+            continue
+        else:
+            continue
 
 
-
-#seperating initiial comments and answers
-
-
-
-# for comment in comments:
-#     if '.' not in (comments[comment]['cid']): 
-#         Authors.append(comments[comment]['author'])
-#     else:
-#         isAnswer = True
-
-
-
-def getAuthors(comments):
-    Authors = []
-    for comment in comments:
-        Authors.append(comments[comment]['author'])    
-    return Authors
-    
-Authors = getAuthors(comments)
-c = Counter(Authors)
-most_common_Authors =  c.most_common(50)

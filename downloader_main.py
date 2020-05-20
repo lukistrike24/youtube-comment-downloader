@@ -10,23 +10,25 @@ import json
 from comments_downloader import downloader_main
 from description_downloader import scrape_video_data
 from datetime import datetime
+from tqdm import tqdm
 
 urlList = 'C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\download_urls\\galileo_urls2.txt'
+output_folder = "C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\Data\\Galileo"
 
 with open(urlList) as f:
     content = f.readlines()
 content = [x.strip() for x in content]
 
-for video_url in content:
+for video_url in tqdm(content):
     
     #video_url = 'https://www.youtube.com/watch?v=nXWzbsnb638'
-    output_folder = "C:\\Users\\luhoe\\Documents\\Git_Projects\\Github\\youtube-comment-downloader\\Data"
+    
     
     
     argv = {}
     argv['youtubeid'] = video_url.split('=')[-1]
     argv['output'] = output_folder
-    argv['limit'] = 1000
+    argv['limit'] = 100000000
     
     
     # Create if directory does not exist
