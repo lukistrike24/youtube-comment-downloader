@@ -36,7 +36,10 @@ def is_true(string):
 
 
 def remove_comma(string):
-    return ''.join(string.split(','))
+    if '.' in string:
+        return ''.join(string.split('.'))
+    else:
+         return ''.join(string.split(','))
 
 
 def make_soup(url):

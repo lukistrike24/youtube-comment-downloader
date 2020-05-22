@@ -35,6 +35,7 @@ def ajax_request(session, url, params=None, data=None, headers=None, retries=5, 
             return {}
         else:
             time.sleep(sleep)
+            print('no response sleeping ' + str(sleep) + ' seconds')
 
 
 def download_comments(youtube_id, sleep=.1):
