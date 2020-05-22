@@ -4,8 +4,10 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.txt
 *.json
+
+Youtube_API_KEY.txt
 
 # Distribution / packaging
 .Python
